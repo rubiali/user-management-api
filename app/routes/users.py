@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.database import get_db
+from app.deps import get_current_user
 
 router = APIRouter(
     prefix="/users",
@@ -15,5 +16,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/", response_model=list[schemas.UserResponse])
-def list_users(db: Session = Depends(get_db)):
+def list_users(
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_user)
+    ):
     return crud.get_users(db)
