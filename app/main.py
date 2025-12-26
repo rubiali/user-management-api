@@ -1,7 +1,14 @@
 from fastapi import FastAPI
 from app.database import engine
+from app import models
 
-app = FastAPI()
+app = FastAPI(
+    title="User Management API",
+    description="API REST para gerenciamento de usuários com autenticação JWT",
+    version="1.0.0"
+)
+
+models.Base.metadata.create_all(bind=engine)
 
 @app.get("/health")
 def health():
