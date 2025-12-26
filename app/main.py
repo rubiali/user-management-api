@@ -1,11 +1,13 @@
 from fastapi import FastAPI
+from app.database import engine
 
-app = FastAPI(
-    title="User Management API",
-    description="API REST para gerenciamento de usuários com autenticação JWT",
-    version="1.0.0"
-)
+app = FastAPI()
 
 @app.get("/health")
-def health_check():
+def health():
     return {"status": "ok"}
+
+@app.get("/db-check")
+def db_check():
+    with engine.connect() as conn:
+        return {"db": "connected"}
